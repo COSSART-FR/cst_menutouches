@@ -1,16 +1,33 @@
-RegisterCommand("touches", function(source, args, rawCommand)
-
-	SetNuiFocus( true, true )
-	SendNUIMessage({
-		ativa = true
-	})
+local open = false
+RegisterCommand("touches", function()
+	if not open then
+		Touche()
+	else
+		Touche()
+		SendNUIMessage({
+			ativa = false
+		})
+	end
 end, false)
-
-
-RegisterNUICallback('fechar', function(data, cb)
-	SetNuiFocus( false )
-	SendNUIMessage({
-	ativa = false
-	})
-  	cb('ok')
-end)
+function Touche()
+	if open then
+		open = false
+		return
+	else
+		open = true
+		SendNUIMessage({
+			ativa = true
+		})
+		Citizen.CreateThread(function ()
+			while open do
+				Citizen.Wait(5.0)
+				if IsControlJustReleased(0, 178) then
+					Touche()
+					SendNUIMessage({
+						ativa = false
+					})
+				end
+			end
+		end)
+	end
+end
