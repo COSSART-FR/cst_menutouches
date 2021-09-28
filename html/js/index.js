@@ -1,9 +1,9 @@
 $(function() {
-  $(document).keyup(function(e) {
+  /*$(document).keyup(function(e) {
       if (e.keyCode == 27) {
           $.post('http://cst_menutouche/fechar', JSON.stringify({}));
       }
-  });
+  });*/
   $(document).ready(function() {
       window.addEventListener('message', function(event) {
           var item = event.data;
